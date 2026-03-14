@@ -1,0 +1,150 @@
+/* Mobile-First CSS for Interactive Anuran Identification Key
+   Extends desktop CSS with responsive optimizations.
+   Assumes original desktop styles are in a separate file; this can be appended or merged.
+   Production-ready for PWAs: Includes offline-first strategies like compressed data URIs for images to reduce network requests.
+   Viewport meta tag recommendation: <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> for optimal mobile rendering.
+*/
+
+/* Base styles: Mobile-first (small screens up to 767px) */
+/* Use flexible units like rem/em for scalability */
+body {
+  font-family: 'Arial', sans-serif; /* Fallback for readability */
+  font-size: 16px; /* Base font size for mobile */
+  line-height: 1.5; /* Improved readability */
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5; /* Light background for contrast */
+  color: #333; /* High contrast text */
+}
+
+/* Responsive typography: Use clamp for flexible font sizes */
+h1 {
+  font-size: clamp(1.5rem, 5vw, 2rem); /* Scales from 24px to 32px */
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  margin-bottom: 0.75rem;
+}
+
+p {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  margin-bottom: 1rem;
+}
+
+/* Touch targets: Minimum 44x44px for buttons/inputs */
+button, input[type="button"], input[type="submit"], .interactive-element {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 12px 16px; /* Increased padding for touch */
+  margin: 8px; /* Spacing to avoid accidental touches */
+  font-size: 1rem;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.2s ease; /* Smooth transitions for performance */
+}
+
+/* Remove hover effects on mobile; use active/focus for touch feedback */
+button:active, input[type="button"]:active, input[type="submit"]:active, .interactive-element:active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+button:focus, input[type="button"]:focus, input[type="submit"]:focus, .interactive-element:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Adaptive layout: Panels stack vertically on mobile */
+.panel {
+  display: flex;
+  flex-direction: column; /* Stack vertically */
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+}
+
+.panel .section {
+  margin-bottom: 1rem;
+}
+
+/* Images: Optimized for mobile with compressed data URIs for offline-first PWA */
+/* Example: Use base64 encoded small images to cache in CSS for offline access */
+.anuran-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  /* For PWA offline: Replace src with data URI in HTML, e.g., <img src="data:image/jpeg;base64,..."> */
+  /* Compress images to <50KB for fast loading */
+}
+
+/* Scroll and overflow optimization */
+.container {
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-y: auto; /* Smooth vertical scroll */
+  -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+}
+
+/* Better contrast and legibility */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #333;
+    color: #f5f5f5;
+  }
+  .panel {
+    background-color: #444;
+  }
+}
+
+/* Tablet breakpoint: 768px and up */
+@media (min-width: 768px) {
+  body {
+    font-size: 18px; /* Slightly larger base */
+  }
+
+  .panel {
+    flex-direction: row; /* Horizontal layout */
+    justify-content: space-between;
+  }
+
+  .panel .section {
+    flex: 1;
+    margin-right: 1rem;
+  }
+
+  .panel .section:last-child {
+    margin-right: 0;
+  }
+
+  /* Restore hover effects for non-touch devices */
+  button:hover, input[type="button"]:hover, input[type="submit"]:hover, .interactive-element:hover {
+    background-color: #e7f3ff;
+  }
+}
+
+/* Desktop breakpoint: 1024px and up */
+@media (min-width: 1024px) {
+  body {
+    font-size: 20px;
+  }
+
+  .panel {
+    max-width: 1200px;
+    margin: 2rem auto;
+  }
+
+  /* Further optimizations for larger screens */
+  .anuran-image {
+    max-width: 50%;
+  }
+}
+
+/* Performance optimizations: Minimize repaints/reflows */
+/* Use transform for animations instead of changing layout properties */
+/* For PWA: Ensure CSS is cached via service worker; preload critical resources */
